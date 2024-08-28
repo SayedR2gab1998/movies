@@ -15,9 +15,11 @@ Widget defaultTextFormField({
   required TextInputType inputType,
   required String hint,
   IconData? suffix,
+  IconData? prefix,
   Function()? onSuffixPressed,
   Function()? onTap,
   Function(String s)? onSubmit,
+  Function(String s)? onChange,
   bool isPassword = false,
   int? max,
   bool enable = true,
@@ -29,13 +31,15 @@ Widget defaultTextFormField({
       keyboardType: inputType,
       obscureText: isPassword,
       onTap: onTap,
+      onChanged: onChange,
       onFieldSubmitted: onSubmit,
       style: const TextStyle(
-        color: Colors.black,
+        color: Colors.white,
         fontSize: 18,
       ),
       decoration: InputDecoration(
         hintText: hint,
+        prefixIcon: Icon(prefix,color: Colors.white,),
         hintStyle:  const TextStyle(
           color: Colors.white,
         ),
