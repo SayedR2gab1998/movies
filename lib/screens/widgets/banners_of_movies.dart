@@ -53,20 +53,17 @@ class BannersOfMovies extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text('${movie['original_title']}',
+                                maxLines: 2,
                                 style: const TextStyle(
-                                    fontSize: 20,
-                                    color: Colors.white
+                                  fontSize: 18,
+                                  color: Colors.white
                                 ),
                               ),
-                              Row(
-                                children: [
-                                  Text('${movie['release_date']}',
-                                    style: const TextStyle(
-                                        fontSize: 20,
-                                        color: Colors.grey
-                                    ),
-                                  ),
-                                ],
+                              Text('${movie['release_date']}',
+                                style: const TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.grey
+                                ),
                               ),
                             ],
                           ),
