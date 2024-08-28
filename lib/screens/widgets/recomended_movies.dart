@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:movies/api/home_api.dart';
 import 'package:movies/components/components.dart';
 import 'package:movies/components/constants.dart';
+import 'package:movies/firebase/firestore.dart';
 import 'package:movies/screens/movie_details/movie_details.dart';
 
 class RecomendedMovies extends StatelessWidget {
@@ -72,7 +73,13 @@ class RecomendedMovies extends StatelessWidget {
                                             ),
                                           ),
                                           child: IconButton(
-                                            onPressed: (){},
+                                            onPressed: (){
+                                              addMovie(
+                                                poster: 'https://image.tmdb.org/t/p/w500${movie['poster_path']}',
+                                                title: '${movie['original_title']}',
+                                                date: '${movie['release_date']}',
+                                              );
+                                            },
                                             icon: const Icon(Icons.add,color: Colors.white,)
                                           ),
                                         ),
