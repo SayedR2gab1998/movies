@@ -2,9 +2,12 @@
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_container/easy_container.dart';
 import 'package:flutter/material.dart';
+import 'package:movies/components/components.dart';
 import 'package:movies/components/constants.dart';
 import 'package:movies/models/watch_list.dart';
+import 'package:movies/screens/movie_details/movie_details.dart';
 
 class WishList extends StatelessWidget {
   const WishList({super.key});
@@ -27,30 +30,52 @@ class WishList extends StatelessWidget {
       body: StreamBuilder(
         stream: movies,
         builder: (context,snapshot){
-          if(snapshot.connectionState == ConnectionState.done){
+          if(snapshot.hasData){
             List<WatchList> watchList = [];
             for(int i =0;i<snapshot.data!.docs.length;i++){
               watchList.add(WatchList.fromJson(snapshot.data!.docs[i]));
+              print(watchList[i]);
             }
-            return ListView.builder(
-              itemCount: watchList.length,
-              itemBuilder: (context,index){
-                return ListTile(
-                  leading: CachedNetworkImage(imageUrl: watchList[index].poster),
-                  title: Text(watchList[index].title,
-                    style: const TextStyle(
-                      fontSize: 20,
-                      color: Colors.white,
+            return watchList.isEmpty?const Center(
+              child: Text('Add movies to your Watch List',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                ),
+              ),
+            ):Expanded(
+              child: ListView.builder(
+                itemCount: watchList.length,
+                itemBuilder: (context,index){
+                  return EasyContainer(
+                    padding: 8,
+                    color: Colors.transparent,
+                    showBorder: true,
+                    borderWidth: 1,
+                    borderColor: Colors.white,
+                    borderRadius: 12,
+                    onTap: (){
+                      navigateTo(context, MovieDetails(name: watchList[index].title, id: watchList[index].id));
+                    },
+                    child: ListTile(
+                      leading: CachedNetworkImage(imageUrl:'https://image.tmdb.org/t/p/w500${watchList[index].poster}',
+                      ),
+                      title: Text(watchList[index].title,
+                        style: const TextStyle(
+                          fontSize: 20,
+                          color: Colors.white,
+                        ),
+                      ),
+                      subtitle: Text(watchList[index].date,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: Colors.grey,
+                        ),
+                      ),
                     ),
-                  ),
-                  subtitle: Text(watchList[index].date,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      color: Colors.grey,
-                    ),
-                  ),
-                );
-              }
+                  );
+                }
+              ),
             );
           }
           else if(snapshot.hasError){
@@ -63,9 +88,14 @@ class WishList extends StatelessWidget {
               ),
             );
           }
+          else if (snapshot.connectionState == ConnectionState.waiting){
+            return  const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
           else{
             return const Center(
-              child: Text('Data Error',
+              child: Text('Error',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 24,
@@ -73,7 +103,6 @@ class WishList extends StatelessWidget {
               ),
             );
           }
-
         }
       ),
     );

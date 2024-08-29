@@ -8,6 +8,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:movies/components/components.dart';
 import 'package:movies/components/constants.dart';
 import 'package:http/http.dart' as http;
+import 'package:movies/screens/movie_details/movie_details.dart';
 
 class Search extends StatefulWidget {
   const Search({super.key});
@@ -83,41 +84,46 @@ class _SearchState extends State<Search> {
               child: ListView.builder(
                 itemCount: movies.length,
                 itemBuilder: (context, index) {
-                  return Card(
-                    color: Colors.transparent,
-                    child: ListTile(
-                      leading: SizedBox(
-                          height: 100,
-                          width: 50,
-                          child: CachedNetworkImage(imageUrl: 'https://image.tmdb.org/t/p/w500${movies[index]['poster_path']}',
-                              errorWidget: (context, url, error) => const Icon(Icons.broken_image),
-                          ),
-
-                      ),
-                      title: Text(movies[index]['title'],
-                        style: const TextStyle(color: Colors.white),
-                      ),
-                      subtitle: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('${movies[index]['release_date']}',
-                            style: const TextStyle(
-                              fontSize: 16,
+                  return GestureDetector(
+                    onTap: (){
+                      navigateTo(context, MovieDetails(name:movies[index]['title'] , id: movies[index]['id']));
+                    },
+                    child: Card(
+                      color: Colors.transparent,
+                      child: ListTile(
+                        leading: SizedBox(
+                            height: 100,
+                            width: 50,
+                            child: CachedNetworkImage(imageUrl: 'https://image.tmdb.org/t/p/w500${movies[index]['poster_path']}',
+                                errorWidget: (context, url, error) => const Icon(Icons.broken_image),
                             ),
-                          ),
-                          Row(
-                            children: [
-                              const Icon(Icons.star,color: Colors.amber,),
-                              const SizedBox(width: 10,),
-                              Text('${movies[index]['vote_average']}',
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  color: Colors.white
-                                ),
+
+                        ),
+                        title: Text(movies[index]['title'],
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                        subtitle: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text('${movies[index]['release_date']}',
+                              style: const TextStyle(
+                                fontSize: 16,
                               ),
-                            ],
-                          )
-                        ],
+                            ),
+                            Row(
+                              children: [
+                                const Icon(Icons.star,color: Colors.amber,),
+                                const SizedBox(width: 10,),
+                                Text('${movies[index]['vote_average']}',
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.white
+                                  ),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   );

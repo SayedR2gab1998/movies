@@ -78,6 +78,8 @@ class RecomendedMovies extends StatelessWidget {
                                                 poster: 'https://image.tmdb.org/t/p/w500${movie['poster_path']}',
                                                 title: '${movie['original_title']}',
                                                 date: '${movie['release_date']}',
+                                                id: movie['id'],
+                                                context: context,
                                               );
                                             },
                                             icon: const Icon(Icons.add,color: Colors.white,)
